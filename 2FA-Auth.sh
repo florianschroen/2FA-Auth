@@ -82,11 +82,19 @@ function mainMenu() {
 if [[ $( TokenCount ) = "0" ]]; then
     mainMenu
 else
-    case $1 in
+    case ${1^^} in
         "")
             echo "current tokens:"
             Token Generate
             ;;
+        1|A) Token Add ;;
+        2|D|R) Token Del ;;
+        3|L) Token List ;;
+        4|E) Token Export ;;
+        5|G) Token Generate ;;
+        6|C) Backup Create ;;
+        7|R) Backup Restore ;;
+        I) Information ;;
         *)
             mainMenu
             ;;
