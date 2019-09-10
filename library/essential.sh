@@ -49,7 +49,7 @@ function Information () {
     echo "Software license....: GNU GPL (General Public License) v3.0"
     echo "Created by..........: Vinicius de Alencar (alencc1986)"
     echo
-    echo "Your GnuPG UserID...: $( grep UserID $InfoFile | cut -d' ' -f2 )"
+    echo "Your GnuPG UserID...: $( grep UserID $InfoFile | cut -d' ' -f2- )"
     echo "Your GnuPG KeyID....: $( grep KeyID $InfoFile | cut -d' ' -f2 )"
 }
 
@@ -120,7 +120,7 @@ function SystemCheck () {
         UserID=$( echo $UserID | sed 's| \+||g' ) ; echo "UserID $UserID" > $InfoFile
         KeyID=$( echo ${KeyID^^} | sed 's| \+||g' ) ; echo "KeyID $KeyID" >> $InfoFile
     else
-        UserID=$( grep "UserID" $InfoFile | cut -d' ' -f2 )
+        UserID=$( grep "UserID" $InfoFile | cut -d' ' -f2- )
         KeyID=$( grep "KeyID" $InfoFile | cut -d' ' -f2 )
     fi
 }
