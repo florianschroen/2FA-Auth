@@ -193,8 +193,11 @@ function TokenGenerate () {
 
         Index=0
         for Service in $( basename -a -s .token $( find $TokenDir -type f -name *.token | sort ) ); do
-            TOTP="$( $GPG --quiet --local-user $KeyID --recipient $UserID --decrypt $TokenDir/$Service.token )"
-            Array2FACode[$Index]="$( $OATHTOOL -b --totp "$TOTP" )"
+            TOTP="$( $GPG --quiet --local-user $KeyID --recipient $UserID --decrypt $TokenDir/$Service.token 2>&1)"
+            case $? in
+                0) Array2FACode[$Index]="$( $OATHTOOL -b --totp "$TOTP" )" ;;
+                *) Array2FACode[$Index]="n/a ($TOTP)" ;;
+            esac
             let Index+=1
         done
 
