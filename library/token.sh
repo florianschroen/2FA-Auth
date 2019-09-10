@@ -107,13 +107,16 @@ function TokenDel () {
     fi
 }
 
+function TokenCount () {
+    return $( find $TokenDir -type f -name *.token | wc -l )
+}
 function TokenList () {
     echo "======================"
     echo "2FA-Auth // List token"
     echo "======================"
     echo
 
-    if [[ $( find $TokenDir -type f -name *.token | wc -l ) = "0" ]]; then
+    if [[ $( TokenCount ) = "0" ]]; then
         echo "ATTENTION! Nothing to be listed!"
     else
         echo "Listing available services:"
