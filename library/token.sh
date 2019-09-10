@@ -201,11 +201,13 @@ function TokenGenerate () {
             let Index+=1
         done
 
+        (
         Index=0
         for Number in $( seq 1 1 $( ls -1 $TokenDir | wc -l ) ); do
-            echo "[$Number] $( sed -r ':loop; s| ('.'*):$|\1'.':|; t loop' <<< "$(printf '%-20s:\n' ${ArrayService[$Index]})" ) ${Array2FACode[$Index]}"
+            echo "[$Number]|${ArrayService[$Index]}:|${Array2FACode[$Index]}|[$Number]"
             let Index+=1
         done
+        ) | column -t -s \|
     fi
 }
 
