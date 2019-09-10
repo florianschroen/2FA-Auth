@@ -50,7 +50,7 @@ function TokenAdd () {
                 Token="$Input"
 
                 echo "$Token" > $TokenDir/$Service.txt && \
-                $GPG -u $KeyID -r $UserID -o $TokenDir/$Service.token -e $TokenDir/$Service.txt && \
+                $GPG -u $KeyID -r "$UserID" -o $TokenDir/$Service.token -e $TokenDir/$Service.txt && \
                     { echo "SUCCESS! '$Service' has been included using the token '$Token'" ; rm -rf $TokenDir/$Service.txt ; } || \
                     { echo "ERROR! Something wrong happened while importing the '$Service' token!" ; rm -rf $TokenDir/$Service.{token,txt} ; }
             fi
@@ -140,7 +140,7 @@ function TokenExport () {
 
         Index=0
         for Service in $( basename -a -s .token $( find $TokenDir -type f -name *.token | sort ) ); do
-            ArrayToken[$Index]=$( $GPG --quiet -u $KeyID -r $UserID -d $TokenDir/$Service.token )
+            ArrayToken[$Index]=$( $GPG --quiet -u $KeyID -r "$UserID" -d $TokenDir/$Service.token )
             let Index+=1
         done
 
@@ -193,7 +193,7 @@ function TokenGenerate () {
 
         Index=0
         for Service in $( basename -a -s .token $( find $TokenDir -type f -name *.token | sort ) ); do
-            TOTP="$( $GPG --quiet --local-user $KeyID --recipient $UserID --decrypt $TokenDir/$Service.token 2>&1)"
+            TOTP="$( $GPG --quiet --local-user $KeyID --recipient "$UserID" --decrypt $TokenDir/$Service.token 2>&1)"
             case $? in
                 0) Array2FACode[$Index]="$( $OATHTOOL -b --totp "$TOTP" )" ;;
                 *) Array2FACode[$Index]="n/a ($TOTP)" ;;
