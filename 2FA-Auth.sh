@@ -96,8 +96,12 @@ else
         6|C) Backup Create ;;
         7|R) Backup Restore ;;
         I) Information ;;
-        *)
+        M|MENU|HELP|--HELP)
             mainMenu
+            ;;
+        *)
+            echo "current tokens:"
+            Token Generate $1
             ;;
     esac
 fi

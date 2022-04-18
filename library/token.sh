@@ -189,10 +189,12 @@ function TokenGenerate () {
         echo "Generating 2FA codes for all available services! Please, wait..."
         echo
 
-        ArrayService=( $( basename -a -s .token $( find $TokenDir -type f -name *.token | sort ) ) )
+        search_str=$1
+
+        ArrayService=( $( basename -a -s .token $( find $TokenDir -type f -name *.token | grep "$search_str" | sort ) ) )
 
         Index=0
-        for Service in $( basename -a -s .token $( find $TokenDir -type f -name *.token | sort ) ); do
+        for Service in $( basename -a -s .token $( find $TokenDir -type f -name *.token | grep "$search_str" | sort ) ); do
             TOTP="$( $GPG --quiet --local-user $KeyID --recipient "$UserID" --decrypt $TokenDir/$Service.token 2>&1)"
             case $? in
                 0) Array2FACode[$Index]="$( $OATHTOOL -b --totp "$TOTP" )" ;;
@@ -203,7 +205,7 @@ function TokenGenerate () {
 
         (
         Index=0
-        for Number in $( seq 1 1 $( ls -1 $TokenDir | wc -l ) ); do
+        for Number in $( seq 1 1 $( ls -1 $TokenDir | grep "$search_str" | wc -l ) ); do
             echo "[$Number]|${ArrayService[$Index]}:|${Array2FACode[$Index]}|[$Number]"
             let Index+=1
         done
@@ -219,6 +221,6 @@ function Token () {
              Del) TokenDel ;;
             List) TokenList ;;
           Export) TokenExport ;;
-        Generate) TokenGenerate ;;
+        Generate) TokenGenerate $2 ;;
     esac
 }
